@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Churning Karma</title>
+    <title>ChurningCanada Karma</title>
 
     <!-- Bootstrap core CSS -->
     <!-- Latest compiled and minified CSS -->
@@ -69,8 +69,8 @@
     <div class="container">
 
         <div class="page-header">
-            <h1>Churning Karma</h1>
-            <p class="lead">Get your Churning Karma to check if you are eligible to post in the referral threads</p>
+            <h1>ChurningCanada Karma</h1>
+            <p class="lead">Get your ChurningCanada Karma to check if you are eligible to post in the referral threads</p>
         </div>
 
         <div class="panel panel-success" id="warning">
@@ -94,7 +94,7 @@
         <p id="statusline" class="text-center hidden">Fetched <span id="commentcount">0</span> total comments... <i class="fa fa-spinner fa-spin"></i></p>
         <div class="panel panel-success text-center hidden" id="resultpanel">
             <div class="panel-body">
-                <p>Your Churning Karma is:</p>
+                <p>Your ChurningCanada Karma is:</p>
                 <h1 id="score"></h1>
             </div>
         </div>
@@ -145,7 +145,7 @@
                     UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
 
                     $.each(obj.data.children, function() {
-                        if (this.data['subreddit'] == "churning") {
+                        if (this.data['subreddit'] == "churningcanada") {
 
                             //Did we finish 3 months?
                             if (this.data['created_utc'] < UTCThreeMonthsAgo) {
