@@ -115,6 +115,16 @@
     </div>
     <!-- /container -->
     <script>
+        
+        const testJson = $.getJSON('test.json', {
+                    sort: "new",
+                    limit: "100",
+                    after: afterComment,
+                    raw_json: "1"
+                },
+                function(obj) {
+            
+        });
         var karma = 0;
         var commentCount = 0;
         var finishedThreeMonths = false;
