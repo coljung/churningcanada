@@ -119,12 +119,13 @@
         const testJson = $.getJSON('test.json', {
                     sort: "new",
                     limit: "100",
-                    after: afterComment,
                     raw_json: "1"
                 },
                 function(obj) {
-            
-        });
+                    const r2 = obj[1].data.children
+                    r2.forEach(function(obje) { console.log(obje.data.author)});
+                }
+        );
         var karma = 0;
         var commentCount = 0;
         var finishedThreeMonths = false;
