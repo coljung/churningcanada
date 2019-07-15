@@ -123,7 +123,9 @@
                 },
                 function(obj) {
                     const r2 = obj[1].data.children
-                    r2.forEach(function(obje) { console.log(obje.data.author)});
+                    r2.forEach(function(obje) { 
+                        console.log(obje.data.author)
+                    });
                 }
         );
         var karma = 0;
@@ -171,21 +173,8 @@
                                 score = 0;
                             karma += score;
 
-                            //update table
-                            var commentLink = $("<a />", {
-                                href: "https://www.reddit.com/" + this.data['permalink'],
-                                text: ("" + this.data['body']).trunc(125),
-                                target: "_blank"
-                            });
-
-                            $("#outputtable > tbody > tr").length
-
-                            $("#outputtable").find('tbody')
-                                .append($('<tr>')
-                                    .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
-                                    .append($('<td>').append(commentLink))
-                                    .append($('<td>').append(score))
-                                )
+                           
+                            
                         }
                     });
                     if (obj.data.after != null && !finishedThreeMonths) {
