@@ -124,11 +124,57 @@
                 function(obj) {
                     const r2 = obj[1].data.children
                     r2.forEach(function(obje) { 
-                        console.log(obje.data.author)
+                        console.log(obje.data.author);
+                        var karma = 0;
+                        var commentCount = 0;
+                        var finishedThreeMonths = false;
+                        process();
+                         function process(afterComment) {
+
+                            $.getJSON('https://www.reddit.com/user/' + obje.data.author + '/comments.json', {
+                                    sort: "new",
+                                    limit: "100",
+                                    after: afterComment,
+                                    raw_json: "1"
+                                },
+                                function(obj) {
+                                    commentCount += obj.data.children.length;
+                                    $("#commentcount").html(commentCount);
+                                    UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
+
+                                    $.each(obj.data.children, function() {
+                                        if (this.data['subreddit'] == "churningcanada") {
+
+                                            //Did we finish 3 months?
+                                            if (this.data['created_utc'] < UTCThreeMonthsAgo) {
+                                                finishedThreeMonths = true;
+                                                return false;
+                                            }
+
+                                            //calculate score
+                                            var score = this.data['score'];
+                                            if (score > 0) score -= 1;
+                                            else
+                                                score = 0;
+                                            karma += score;
+
+
+
+                                        }
+                                    });
+                                    if (obj.data.after != null && !finishedThreeMonths) {
+                                        var callprocess = process(obj.data.after);
+                                        setTimeout(callprocess, 1000);
+                                    } else
+                                        end();
+                                });
+
+                            return;
+                        }
                     });
                 }
         );
-        var karma = 0;
+     /*   var karma = 0;
         var commentCount = 0;
         var finishedThreeMonths = false;
 
@@ -186,7 +232,7 @@
 
             return;
         }
-
+*/
         function end() {
             $("#statusline").slideUp();
             $("#score").text(karma);
