@@ -124,7 +124,6 @@
                 function(obj) {
                     const r2 = obj[1].data.children
                     r2.forEach(function(obje) { 
-                        console.log(obje.data.author);
                         var karma = 0;
                         var commentCount = 0;
                         var finishedThreeMonths = false;
@@ -166,7 +165,7 @@
                                         var callprocess = process(obj.data.after);
                                         setTimeout(callprocess, 1000);
                                     } else
-                                        end();
+                                        console.log(obje.data.author,  karma)
                                 });
 
                             return;
