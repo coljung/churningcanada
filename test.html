@@ -118,7 +118,7 @@
     function start() {      
         const url = $("#urlToUse").val() + ".json";
         console.log(url);
-        const testJson = $.getJSON('test.json', {
+        const testJson = $.getJSON(url, {
                     sort: "new",
                     limit: "100",
                     raw_json: "1"
