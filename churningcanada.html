@@ -58,7 +58,10 @@
         }
         
         .badkarma{
-            background-color: red;   
+            background-color: rgba(255, 234, 0, 0.7);   
+        }
+        .nokarma {
+            background-color: rgba(255, 0, 21, 0.7);   
         }
     </style>
 
@@ -170,10 +173,10 @@
                                         
                                             //update table
                                         $("#outputtable").find('tbody')
-                                                .append($('<tr>')
+                                                .append($('<tr>').addClass(karma < 1 ? 'nokarma' : karma < 5 ? 'badkarma' : 'ok')
                                                     .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
                                                     .append($('<td>').append(obje.data.author))
-                                                    .append($('<td>').addClass(karma < 5 ? 'badkarma' : 'okkarma').append(karma))
+                                                    .append($('<td>').append(karma))
                                                 )
                                 });
                             return;
