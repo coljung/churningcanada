@@ -58,7 +58,7 @@
         }
         
         .badkarma{
-            background-color: rgba(255, 234, 0, 0.7);   
+            background-color: rgba(255, 234, 0, 0.7) !important;
         }
         .nokarma {
             background-color: rgba(255, 0, 21, 0.7);   
@@ -87,7 +87,6 @@
             <div class="panel-body">
                 <ul>
                     <li>Gets your comments on /r/churning from the past 3 months. Reddit only gives the last 1000 comments total so if you are a very active user, this might not be accurate</li>
-                    <li>For each of your comments, check the comment score</li>
                     <li>If comment score>0, add (comment score-1). Otherwise the comment does not add anything to your churning karma.</li>
                 </ul>
                 <p><strong>Everything is fetched locally by your browser so don't abuse this by checking everyone's score. Doing so might cause reddit to place limits on you.</strong></p>
@@ -95,7 +94,7 @@
             </div>
         </div>
         <form class="form-inline text-center" id="inputform" onsubmit="return false;">
-            <input type="text" class="form-control mb-4 mr-sm-4 mb-sm-0" id="urlToUse" placeholder="Referral Thread full url">
+            <input type="text" class="form-control mb-4 mr-sm-4 mb-sm-0" id="urlToUse" placeholder="Referral Thread full url" style="width: 80%;">
             <button type="submit" class="btn btn-primary" onclick="start();">Submit</button>
         </form>
         <p id="statusline" class="text-center hidden">Fetched <span id="commentcount">0</span> total comments... <i class="fa fa-spinner fa-spin"></i></p>
@@ -122,128 +121,87 @@
     </div>
     <!-- /container -->
     <script>
-    function start() {      
-        const url = $("#urlToUse").val() + ".json";
-        console.log(url);
-        const testJson = $.getJSON(url, {
-                    sort: "new",
-                    limit: "200",
-                    raw_json: "1"
-                },
-                function(obj) {
-                    const r2 = obj[1].data.children
-                    r2.forEach(function(obje) { 
-                        var karma = 0;
-                        var commentCount = 0;
-                        var finishedThreeMonths = false;
-                        process();
-                         function process(afterComment) {
-                            $.getJSON('https://www.reddit.com/user/' + obje.data.author + '/comments.json', {
-                                    sort: "new",
-                                    limit: "200",
-                                    after: afterComment,
-                                    raw_json: "1"
-                                },
-                                function(obj) {
-                                    commentCount += obj.data.children.length;
-                                    $("#commentcount").html(commentCount);
-                                    UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
-                                    $.each(obj.data.children, function() {
-                                        if (this.data['subreddit'] == "churningcanada") {
-                                            //Did we finish 3 months?
-                                            if (this.data['created_utc'] < UTCThreeMonthsAgo) {
-                                                finishedThreeMonths = true;
-                                                return false;
-                                            }
-                                            //calculate score
-                                            var score = this.data['score'];
-                                            if (score > 0) score -= 1;
-                                            else
-                                                score = 0;
-                                            karma += score;
-                               
-                                            
-                                            
-                                        }
-                                    });
-                                    if (obj.data.after != null && !finishedThreeMonths) {
-                                        var callprocess = process(obj.data.after);
-                                        setTimeout(callprocess, 1500);
-                                    } else
-                                        
-                                            //update table
-                                        $("#outputtable").find('tbody')
-                                                .append($('<tr>').addClass(karma < 1 ? 'nokarma' : karma < 5 ? 'badkarma' : 'ok')
-                                                    .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
-                                                    .append($('<td>').append(obje.data.author))
-                                                    .append($('<td>').append(karma))
-                                                )
-                                });
-                            return;
-                        }
-                    });
-                }
-        );
-     /*   var karma = 0;
-        var commentCount = 0;
-        var finishedThreeMonths = false;
         function start() {
-            $("#warning").slideUp();
-            $("#inputform").slideUp();
-            $("#statusline").removeClass('hidden');
-            $("#outputtable").removeClass('hidden');
-            process();
-            return;
-        }
-        function process(afterComment) {
-            $.getJSON('https://www.reddit.com/user/' + $("#username").val() + '/comments.json', {
-                    sort: "new",
-                    limit: "100",
-                    after: afterComment,
-                    raw_json: "1"
-                },
-                function(obj) {
-                    commentCount += obj.data.children.length;
-                    $("#commentcount").html(commentCount);
-                    UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
-                    $.each(obj.data.children, function() {
-                        if (this.data['subreddit'] == "churningcanada") {
-                            //Did we finish 3 months?
-                            if (this.data['created_utc'] < UTCThreeMonthsAgo) {
-                                finishedThreeMonths = true;
-                                return false;
+            const url = $("#urlToUse").val() + ".json";
+
+            const UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
+            const testJson = $.getJSON(url, {
+                        sort: "new",
+                        limit: "1000",
+                        raw_json: "1"
+                    },
+                    function(obj) {
+                        const r2 = obj[1].data.children;
+                        console.log(obj[1].data.children)
+                        r2.forEach(function(obje) {
+                            var karma = 0;
+                            var commentCount = 0;
+                            var finishedThreeMonths = false;
+                            process();
+                            function process(afterComment) {
+                                $.getJSON('https://www.reddit.com/user/' + obje.data.author + '/comments.json', {
+                                        sort: "new",
+                                        limit: "100",
+                                        after: afterComment,
+                                        raw_json: "1"
+                                    },
+                                    function(obj) {
+                                        commentCount += obj.data.children.length;
+                                        $("#commentcount").html(commentCount);
+                                        // console.log(obj.data.children)
+                                        $.each(obj.data.children, function() {
+                                            if (this.data['subreddit'] == "churningcanada") {
+                                                //Did we finish 3 months?
+                                                if (this.data['created_utc'] < UTCThreeMonthsAgo) {
+                                                    finishedThreeMonths = true;
+                                                    return false;
+                                                }
+                                                //calculate score
+                                                // var score = this.data['score'];
+                                                // if (score > 0) score -= 1;
+                                                // else
+                                                //     score = 0;
+                                                karma += this.data['score'];
+
+
+
+                                            }
+                                        });
+                                        if (obj.data.after != null && !finishedThreeMonths) {
+                                            var callprocess = process(obj.data.after);
+                                            setTimeout(callprocess, 2500);
+                                        } else
+
+                                                //update table
+                                            // $("#outputtable").find('tbody')
+                                            //         .append($('<tr>').addClass(karma < 1 ? 'nokarma' : karma < 5 ? 'badkarma' : 'ok')
+                                            //             .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
+                                            //             .append($('<td>').append(obje.data.author))
+                                            //             .append($('<td>').append(karma))
+                                            //         )
+
+                                            $("#outputtable").find('tbody')
+                                                    .append($('<tr>').addClass(karma < 5 ? 'badkarma' : '')
+                                                        .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
+                                                        .append($('<td>').append(obje.data.author))
+                                                        .append($('<td>').append(karma))
+                                                    )
+                                    });
+                                return;
                             }
-                            //calculate score
-                            var score = this.data['score'];
-                            if (score > 0) score -= 1;
-                            else
-                                score = 0;
-                            karma += score;
-                           
-                            
-                        }
-                    });
-                    if (obj.data.after != null && !finishedThreeMonths) {
-                        var callprocess = process(obj.data.after);
-                        setTimeout(callprocess, 1000);
-                    } else
-                        end();
-                });
-            return;
+                        });
+                    }
+            );
+
+            function end() {
+                $("#statusline").slideUp();
+                $("#score").text(karma);
+                $("#resultpanel").removeClass('hidden');
+                return;
+            }
+
         }
-*/
-        function end() {
-            $("#statusline").slideUp();
-            $("#score").text(karma);
-            $("#resultpanel").removeClass('hidden');
-            return;
-        }
-        String.prototype.trunc =
-            function(n) {
-                return this.substr(0, n - 1) + (this.length > n ? '...' : '');
-            };
-    }
-    </script>
+        </script>
 </body>
 
 </html>
