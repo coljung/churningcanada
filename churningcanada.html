@@ -181,7 +181,7 @@
                                             //         )
 
                                             $("#outputtable").find('tbody')
-                                                    .append($('<tr>').addClass(karma < 5 ? 'badkarma' : '')
+                                                    .append($('<tr>').addClass(karma < 15 ? 'badkarma' : '')
                                                         .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
                                                         .append($('<td>').append(obje.data.author))
                                                         .append($('<td>').append(karma))
