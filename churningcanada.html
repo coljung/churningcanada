@@ -123,6 +123,7 @@
     <script>
         function start() {
             const url = $("#urlToUse").val() + ".json";
+            let usersArray = [];
 
             const UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
             const testJson = $.getJSON(url, {
@@ -179,13 +180,15 @@
                                             //             .append($('<td>').append(obje.data.author))
                                             //             .append($('<td>').append(karma))
                                             //         )
-
-                                            $("#outputtable").find('tbody')
-                                                    .append($('<tr>').addClass(karma < 15 ? 'badkarma' : '')
+                                            if (karma < 15) {
+                                                $("#outputtable").find('tbody')
+                                                    .append($('<tr>').addClass'badkarma')
                                                         .append($('<td>').append($("#outputtable > tbody > tr").length + 1))
                                                         .append($('<td>').append(obje.data.author))
                                                         .append($('<td>').append(karma))
-                                                    )
+                                                    );
+                                                usersArray.append(obje.data.author);
+                                            }
                                     });
                                 return;
                             }
