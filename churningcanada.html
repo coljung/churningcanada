@@ -121,9 +121,9 @@
     </div>
     <!-- /container -->
     <script>
+        let usersArray = [];
         function start() {
             const url = $("#urlToUse").val() + ".json";
-            let usersArray = [];
 
             const UTCThreeMonthsAgo = ((new Date().getTime()) / 1000) - 7776000;
             const testJson = $.getJSON(url, {
@@ -201,6 +201,7 @@
                 $("#statusline").slideUp();
                 $("#score").text(karma);
                 $("#resultpanel").removeClass('hidden');
+                console.log(usersArray)
                 return;
             }
 
